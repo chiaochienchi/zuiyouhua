@@ -51,12 +51,12 @@ def digui(a, h, v, epsilon):
         h = 2 * h
         v = u
         a = b
-        digui(a, h, v, epsilon)
+        return digui(a, h, v, epsilon)
     elif u * v < 0:
-        print(a, b, u, h, v)
-        a=a.detach().numpy()
-        print(a, b)
-        return a
+        # print(a, b, u, h, v)
+        # a=a.detach().numpy()
+        # print(type(a))
+        return [a, b, u, h, v]
 #         重复插值里的代码，没写完
 
 
@@ -71,13 +71,14 @@ def digui1(a, b, h, epsilon):
             h = abs(h)
         else:
             h = -abs(h)
-        a=(digui(a, h, v, epsilon))
-        print(a)
+        x=digui(a, h, v, epsilon)
+        print(len(x))
+        a = x[0],b = x[1],u = x[2],h = x[3],v = x[4]
         s = 3 * (f(a) - f(b)) / (b - a)
         z = s - u - v
         w = math.sqrt(z ** 2 - u * v)
         a = a - (b - a) * v / (z - w * np.sign(v) - v)
-        digui1(a, b, h, epsilon)
+        return digui1(a, b, h, epsilon)
     else:
         return a
 
@@ -85,8 +86,8 @@ def digui1(a, b, h, epsilon):
 # 照着p55的框图抄的，没想好封装的函数，在外面要写几个递归
 def chazhi(a, h, epsilon):
     fanwei = jintui(a, h)
-    b = torch.tensor(fanwei[1], requires_grad=True)
-    a = torch.tensor(fanwei[0], requires_grad=True)
+    b = fanwei[1]
+    a = fanwei[0]
     return digui1(a, b, h, epsilon)
 
 
