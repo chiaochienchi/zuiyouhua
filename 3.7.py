@@ -72,8 +72,10 @@ def digui1(a, b, h, epsilon):
         else:
             h = -abs(h)
         x=digui(a, h, v, epsilon)
-        print(len(x))
-        a = x[0],b = x[1],u = x[2],h = x[3],v = x[4]
+        y = [a, b, u, h, v]
+        for i in range(len(x)):
+            y[i] = x[i]
+        # a = float[x[0]],b = float[x[1]],u = float[x[2]],h = float[x[3]],v = float[x[4]]
         s = 3 * (f(a) - f(b)) / (b - a)
         z = s - u - v
         w = math.sqrt(z ** 2 - u * v)
